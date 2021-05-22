@@ -1,6 +1,7 @@
 package com.mi_tiempo.myapplication.di.component
 
 import com.mi_tiempo.myapplication.data_access.videollamada.CrearAudioLocal
+import com.mi_tiempo.myapplication.data_access.videollamada.CrearStreamLocal
 import com.mi_tiempo.myapplication.data_access.videollamada.CrearVideoLocal
 import com.mi_tiempo.myapplication.data_access.videollamada.CrearVideoRemoto
 import com.mi_tiempo.myapplication.di.module.ModuleApplication
@@ -27,14 +28,19 @@ interface ComponentApplication {
     fun inject(crearAudioLocal: CrearAudioLocal)
     fun inject(crearVideoLocal: CrearVideoLocal)
     fun inject(crearVideoRemoto: CrearVideoRemoto)
+    fun inject(crearStreamLocal: CrearStreamLocal)
 
     //casos uso
+    fun inject(crearStreamLocalCasoUso: CrearStreamLocalCasoUso)
     fun inject(destruirAudioLocalCasoUso: DestruirAudioLocalCasoUso)
+    fun inject(destruirStreamLocalCasoUso: DestruirStreamLocalCasoUso)
     fun inject(destruirVideoLocalCasoUso: DestruirVideoLocalCasoUso)
     fun inject(destruirVideoRemotoCasoUso: DestruirVideoRemotoCasoUso)
     fun inject(inicializarAudioLocalCasoUso: InicializarAudioLocalCasoUso)
     fun inject(inicializarVideoLocalCasoUso: InicializarVideoLocalCasoUso)
     fun inject(inicializarVideoRemotoCasoUso: InicializarVideoRemotoCasoUso)
+    fun inject(traerAudioTrackLocalCasoUso: TraerAudioTrackLocalCasoUso)
+    fun inject(traerVideoTrackLocalCasoUso: TraerVideoTrackLocalCasoUso)
 
     //viewmodels
     fun inject(streamFragmentViewModel: StreamFragmentViewModel)

@@ -8,11 +8,9 @@ import javax.inject.Inject
 
 class StreamFragmentViewModel {
 
-    @Inject lateinit var destruirAudioLocalCasoUso: DestruirAudioLocalCasoUso
-    @Inject lateinit var destruirVideoLocalCasoUso: DestruirVideoLocalCasoUso
+    @Inject lateinit var crearStreamLocalCasoUso: CrearStreamLocalCasoUso
+    @Inject lateinit var destruirStreamLocalCasoUso: DestruirStreamLocalCasoUso
     @Inject lateinit var destruirVideoRemotoCasoUso: DestruirVideoRemotoCasoUso
-    @Inject lateinit var inicializarVideoLocalCasoUso: InicializarVideoLocalCasoUso
-    @Inject lateinit var inicializarAudioLocalCasoUso: InicializarAudioLocalCasoUso
     @Inject lateinit var inicializarVideoRemotoCasoUso: InicializarVideoRemotoCasoUso
 
     init {
@@ -20,9 +18,8 @@ class StreamFragmentViewModel {
     }
 
     fun destruir() {
-        destruirAudioLocalCasoUso.invoke()
-        destruirVideoLocalCasoUso.invoke()
         destruirVideoRemotoCasoUso.invoke()
+        destruirStreamLocalCasoUso.invoke()
     }
 
     fun inicializarVideoLocal(
@@ -30,8 +27,7 @@ class StreamFragmentViewModel {
         renderLocal: SurfaceViewRenderer,
         renderRemoto: SurfaceViewRenderer
     ) {
-        inicializarVideoLocalCasoUso.invoke(activity, renderLocal)
-        inicializarAudioLocalCasoUso.invoke(activity)
+        crearStreamLocalCasoUso.invoke(activity, renderLocal)
         inicializarVideoRemotoCasoUso.invoke(activity, renderRemoto)
     }
 }
