@@ -10,16 +10,17 @@ class StreamFragmentViewModel {
 
     @Inject lateinit var crearStreamLocalCasoUso: CrearStreamLocalCasoUso
     @Inject lateinit var destruirStreamLocalCasoUso: DestruirStreamLocalCasoUso
-    @Inject lateinit var destruirVideoRemotoCasoUso: DestruirVideoRemotoCasoUso
-    @Inject lateinit var inicializarVideoRemotoCasoUso: InicializarVideoRemotoCasoUso
+    @Inject lateinit var inicializarStreamRemotoCasoUso: InicializarStreamRemotoCasoUso
+    @Inject lateinit var destruirStreamRemotoCasoUso: DestruirStreamRemotoCasoUso
+
 
     init {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
     }
 
     fun destruir() {
-        destruirVideoRemotoCasoUso.invoke()
         destruirStreamLocalCasoUso.invoke()
+        destruirStreamRemotoCasoUso.invoke()
     }
 
     fun inicializarVideoLocal(
@@ -28,6 +29,6 @@ class StreamFragmentViewModel {
         renderRemoto: SurfaceViewRenderer
     ) {
         crearStreamLocalCasoUso.invoke(activity, renderLocal)
-        inicializarVideoRemotoCasoUso.invoke(activity, renderRemoto)
+        inicializarStreamRemotoCasoUso.invoke(activity, renderRemoto)
     }
 }

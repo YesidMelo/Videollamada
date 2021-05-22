@@ -28,13 +28,17 @@ class ModuleVideollamada {
     @ApplicationScope @Provides fun providesInicializarVideoRemotoCasoUso() = InicializarVideoRemotoCasoUso()
     @ApplicationScope @Provides fun providesTraerAudioTrackLocalCasoUso() = TraerAudioTrackLocalCasoUso()
     @ApplicationScope @Provides fun providesTraerVideoTrackLocalCasoUso() = TraerVideoTrackLocalCasoUso()
+    @ApplicationScope @Provides fun providesTraerVideoTrackRemotoCasoUso() = TraerVideoTrackRemotoCasoUso()
 
     //cuarto nivel
 
     @Singleton @ApplicationScope @Provides fun providesCrearStreamLocal() = CrearStreamLocal()
+    @Singleton @ApplicationScope @Provides fun providesCrearStreamRemoto() = CrearStreamRemoto()
 
     //quinto nivel
     @ApplicationScope @Provides fun providesCrearStreamLocalCasoUso() = CrearStreamLocalCasoUso()
     @ApplicationScope @Provides fun providesDestruirStreamLocalCasoUso() = DestruirStreamLocalCasoUso()
+    @ApplicationScope @Provides fun providesInicializarStreamRemotoCasoUso() = InicializarStreamRemotoCasoUso()
+    @ApplicationScope @Provides fun providesDestruirStreamRemotoCasoUso() = DestruirStreamRemotoCasoUso()
 
 }
