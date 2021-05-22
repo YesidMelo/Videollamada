@@ -28,7 +28,11 @@ class StreamFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        streamFragmentViewModel.inicializarVideoLocal(context as AppCompatActivity, binding.videoLocal)
+        streamFragmentViewModel.inicializarVideoLocal(
+            activity= context as AppCompatActivity,
+            renderLocal = binding.videoLocal,
+            renderRemoto = binding.videoRemoto
+        )
     }
 
     override fun onDestroy() {

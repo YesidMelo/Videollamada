@@ -8,6 +8,9 @@ import javax.inject.Singleton
 @Singleton
 class EstaticosVideollamada {
 
+    val ANCHO = 480
+    val ALTO = 640
+    val FPS = 60
     private var rootEglBase : EglBase.Context? = null
     private var factory : PeerConnectionFactory? = null
 

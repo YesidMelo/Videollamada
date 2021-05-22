@@ -12,9 +12,7 @@ import javax.inject.Singleton
 class CrearVideoLocal {
 
     val TAG = "CrearVideoLocal"
-    private val ANCHO = 480
-    private val ALTO = 640
-    private val FPS = 60
+
     private val VIDEOTRACK_ID = "101"
 
     @Inject lateinit var estaticosVideollamada: EstaticosVideollamada
@@ -48,17 +46,19 @@ class CrearVideoLocal {
             return
         }
 
-        surfaceTextureHelper = SurfaceTextureHelper.create(this.javaClass.name, estaticosVideollamada.traerRootEglBaseContext()!!)
+        surfaceTextureHelper = SurfaceTextureHelper.create(TAG, estaticosVideollamada.traerRootEglBaseContext()!!)
 
         val videoCapturer = crearCameraCapturer()
         val videoSource = estaticosVideollamada.traerPeerConnectionFactory()!!.createVideoSource(videoCapturer!!.isScreencast)
         videoCapturer.initialize(surfaceTextureHelper, activity.applicationContext, videoSource.capturerObserver)
-        videoCapturer.startCapture(ANCHO, ALTO, FPS)
+        videoCapturer.startCapture(estaticosVideollamada.ANCHO, estaticosVideollamada.ALTO, estaticosVideollamada.FPS)
 
         surfaceViewRenderer.setMirror(true)
         surfaceViewRenderer.init(estaticosVideollamada.traerRootEglBaseContext(), null)
         videoTrack = estaticosVideollamada.traerPeerConnectionFactory()!!.createVideoTrack(VIDEOTRACK_ID, videoSource)
-        videoTrack!!.addSink(surfaceViewRenderer)
+
+        //Muestra la camara a nivel local
+        //videoTrack!!.addSink(surfaceViewRenderer)
 
     }
 
