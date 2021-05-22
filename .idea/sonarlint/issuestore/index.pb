@@ -21,3 +21,5 @@ z
 Japp/src/main/java/com/mi_tiempo/myapplication/di/module/ModuleViewModel.kt,8\d\8d12ae3f610b4025ce95dd1f64183a26c50585a9
 ‚
 Rapp/src/main/java/com/mi_tiempo/myapplication/ui/stream_fragment/StreamFragment.kt,b\0\b065e7310c1b39ce1663be2e9ad39db2b21098eb
+‰
+Yapp/src/main/java/com/mi_tiempo/myapplication/data_access/videollamada/CrearVideoLocal.kt,7\7\7724fc8e61d04f5f2595f289a8b1ce4b07a50f02
