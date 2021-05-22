@@ -30,4 +30,9 @@ class StreamFragment: Fragment() {
         super.onResume()
         streamFragmentViewModel.inicializarVideoLocal(context as AppCompatActivity, binding.videoLocal)
     }
+
+    override fun onDestroy() {
+        streamFragmentViewModel.destruir()
+        super.onDestroy()
+    }
 }

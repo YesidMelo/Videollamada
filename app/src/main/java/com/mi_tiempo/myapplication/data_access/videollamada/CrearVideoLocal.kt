@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mi_tiempo.myapplication.base.App
 import org.webrtc.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
 ///Codigo basado en https://programmerclick.com/article/13101578132/
-
+@Singleton
 class CrearVideoLocal {
 
     val TAG = "CrearVideoLocal"
@@ -22,6 +23,11 @@ class CrearVideoLocal {
 
     init{
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
+    }
+
+    fun destruir() {
+        videoTrack?.dispose()
+        videoTrack = null
     }
 
     fun inicializarVideoLocal(
