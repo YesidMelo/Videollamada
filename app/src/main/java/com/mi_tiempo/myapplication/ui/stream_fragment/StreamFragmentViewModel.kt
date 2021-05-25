@@ -1,26 +1,24 @@
 package com.mi_tiempo.myapplication.ui.stream_fragment
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.mi_tiempo.myapplication.base.App
-import com.mi_tiempo.myapplication.uses_cases.videollamada.*
+import com.mi_tiempo.myapplication.data_access.videollamada.LogicaVideollamada
 import org.webrtc.SurfaceViewRenderer
 import javax.inject.Inject
 
 class StreamFragmentViewModel {
 
-    @Inject lateinit var crearStreamLocalCasoUso: CrearStreamLocalCasoUso
-    @Inject lateinit var destruirStreamLocalCasoUso: DestruirStreamLocalCasoUso
-    @Inject lateinit var inicializarStreamRemotoCasoUso: InicializarStreamRemotoCasoUso
-    @Inject lateinit var destruirStreamRemotoCasoUso: DestruirStreamRemotoCasoUso
+    val TAG = "StreamFragmentViewModel"
 
+    @Inject lateinit var logicaVideollamada: LogicaVideollamada
 
     init {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
     }
 
     fun destruir() {
-        destruirStreamLocalCasoUso.invoke()
-        destruirStreamRemotoCasoUso.invoke()
+        logicaVideollamada.destruirVideollamada()
     }
 
     fun inicializarVideoLocal(
@@ -28,7 +26,10 @@ class StreamFragmentViewModel {
         renderLocal: SurfaceViewRenderer,
         renderRemoto: SurfaceViewRenderer
     ) {
-        crearStreamLocalCasoUso.invoke(activity, renderLocal)
-        inicializarStreamRemotoCasoUso.invoke(activity, renderRemoto)
+        logicaVideollamada.iniciarVideollamada(activity, renderLocal, renderRemoto)
+        logicaVideollamada.conEscuchadorEnviarASocket {
+            objeto->
+            Log.e(TAG, "objeto: ${objeto?.toString()}")
+        }
     }
 }
