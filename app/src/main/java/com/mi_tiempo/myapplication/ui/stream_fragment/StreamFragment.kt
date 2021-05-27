@@ -16,6 +16,8 @@ class StreamFragment: Fragment() {
 
     @Inject lateinit var streamFragmentViewModel: StreamFragmentViewModel
     lateinit var binding: FragmentStreamBinding
+    var usuarioActual: String? = null
+    var usuarioALlamar: String? = null
 
 
     override fun onCreateView(
