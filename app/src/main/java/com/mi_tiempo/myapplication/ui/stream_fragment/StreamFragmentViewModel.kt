@@ -4,21 +4,22 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.mi_tiempo.myapplication.base.App
 import com.mi_tiempo.myapplication.data_access.videollamada.LogicaWebRTC
+import com.mi_tiempo.myapplication.uses_cases.videollamada.FinalizarVideollamadaWebRTCCasoUso
+import com.mi_tiempo.myapplication.uses_cases.videollamada.IniciarVideollamadaWebRTCasoUso
 import org.webrtc.SurfaceViewRenderer
 import javax.inject.Inject
 
 class StreamFragmentViewModel {
 
-    val TAG = "StreamFragmentViewModel"
-
-    @Inject lateinit var logicaWebRTC: LogicaWebRTC
+    @Inject lateinit var iniciarVideollamadaWebRTCasoUso: IniciarVideollamadaWebRTCasoUso
+    @Inject lateinit var finalizarVideollamadaWebRTCCasoUso: FinalizarVideollamadaWebRTCCasoUso
 
     init {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
     }
 
     fun destruir() {
-        logicaWebRTC.destruirVideollamada()
+        finalizarVideollamadaWebRTCCasoUso.invoke()
     }
 
     fun inicializarVideoLocal(
@@ -26,10 +27,6 @@ class StreamFragmentViewModel {
         renderLocal: SurfaceViewRenderer,
         renderRemoto: SurfaceViewRenderer
     ) {
-        logicaWebRTC.iniciarVideollamada(activity, renderLocal, renderRemoto)
-        logicaWebRTC.conEscuchadorEnviarASocket {
-            objeto->
-            Log.e(TAG, "objeto: ${objeto?.toString()}")
-        }
+        iniciarVideollamadaWebRTCasoUso.invoke(activity, renderLocal, renderRemoto)
     }
 }

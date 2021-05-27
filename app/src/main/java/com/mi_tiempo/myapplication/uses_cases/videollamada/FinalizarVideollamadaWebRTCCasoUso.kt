@@ -4,16 +4,15 @@ import com.mi_tiempo.myapplication.base.App
 import com.mi_tiempo.myapplication.data_access.videollamada.InteraccionEntreWebRTCYSocketVideollamada
 import javax.inject.Inject
 
-class RegistrarUsuarioVideollamadaEnServidorCasoUso {
+class FinalizarVideollamadaWebRTCCasoUso {
 
-    @Inject lateinit var interaccionEntreWebRTCYSocketVideollamada : InteraccionEntreWebRTCYSocketVideollamada
+    @Inject lateinit var interaccionEntreWebRTCYSocketVideollamada: InteraccionEntreWebRTCYSocketVideollamada
 
     init {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
     }
 
-    fun invoke(usuarioActual: String) {
-        interaccionEntreWebRTCYSocketVideollamada.vincular(usuarioActual)
+    fun invoke() {
+        interaccionEntreWebRTCYSocketVideollamada.destruirVideollamadaWebRTC()
     }
-
 }
