@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LogicaVideollamada {
+class LogicaWebRTC {
 
     val TAG = "LogicaVideollamada"
     val ANCHO = 480
@@ -50,7 +50,7 @@ class LogicaVideollamada {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
     }
 
-    fun conEscuchadorEnviarASocket(escuchadorEnviarASocket : ((JSONObject?)->Unit)?) : LogicaVideollamada{
+    fun conEscuchadorEnviarASocket(escuchadorEnviarASocket : ((JSONObject?)->Unit)?) : LogicaWebRTC{
         this.escuchadorEnviarASocket = escuchadorEnviarASocket
         return this
     }
