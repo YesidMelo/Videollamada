@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             mainActivityViewModel.registrarUsuario(Constants.usuario1)
             streamFragment.usuarioActual = Constants.usuario1
             streamFragment.usuarioALlamar = Constants.usuario2
+            streamFragment.sala = "${Constants.usuario1}_${Constants.usuario2}"
             binding.botonUsuario1.visibility = View.GONE
             binding.botonUsuario2.visibility = View.GONE
             navigateToFragment(streamFragment)
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         binding.botonUsuario2.setOnClickListener {
             streamFragment.usuarioActual = Constants.usuario2
             streamFragment.usuarioALlamar = Constants.usuario1
+            streamFragment.sala = "${Constants.usuario1}_${Constants.usuario2}"
             mainActivityViewModel.registrarUsuario(Constants.usuario2)
             binding.botonUsuario2.visibility = View.GONE
             binding.botonUsuario1.visibility = View.GONE
@@ -56,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         binding.botonFinalizarConexion.setOnClickListener {
             streamFragment.usuarioActual = null
             streamFragment.usuarioALlamar = null
+            streamFragment.sala = null
             binding.botonUsuario1.visibility = View.VISIBLE
             binding.botonUsuario2.visibility = View.VISIBLE
             mainActivityViewModel.finalizarConexion()

@@ -10,10 +10,16 @@ import javax.inject.Singleton
 class LogicaSocketVideollamada {
 
     private val TAG = "LogicaSocketVideollamada"
-    private val URL_VIDEOLLAMADA = "http://192.168.1.10:3000/stream"
+    private val URL_VIDEOLLAMADA = "http://192.168.1.3:3000/stream"
 
-    private var escuchadorConexion : ((Canales, Any?)->Unit)? = null
+    private var escuchadorConexion : ((CanalesConexion, Any?)->Unit)? = null
+    private var escuchadorNegociacion: ((CanalesNegociacion, Any?)->Unit)? = null
+    private var escuchadorUnidoASala : (()-> Unit)? = null
+    private var escuchadorUnidoSalirSala : (()-> Unit)? = null
     private val labelUsuarioActual = "usuario"
+    private val labelUsuarioEmisor = "emisor"
+    private val labelUsuarioReceptor = "receptor"
+    private val labelSala = "Sala"
     private var socket: Socket = IO.socket(URL_VIDEOLLAMADA)
     private var socketId: String? = null
     private var usuarioActual : String? = null
@@ -23,18 +29,24 @@ class LogicaSocketVideollamada {
     }
 
     ///MEtodos publicos
-
-    fun conEscuchadorConexion(escuchadorConexion : ((Canales, Any?)->Unit)?) {
+    //Configuracion clase
+    fun conEscuchadorConexion(escuchadorConexion : ((CanalesConexion, Any?)->Unit)?) {
         this.escuchadorConexion = escuchadorConexion
+    }
+
+    fun conEscuchadorNegociacion(escuchadorNegociacion : ((CanalesNegociacion, Any?)->Unit)?) {
+        this.escuchadorNegociacion = escuchadorNegociacion
     }
 
     fun conUsuarioActual(usuarioActual : String?) {
         this.usuarioActual = usuarioActual
     }
 
+    //Canales conexion
+
     fun finalizarConexion() {
-        socket.emit(Canales.finalizarRegistroUsuario.traerNombre(), JSONObject().apply { put(labelUsuarioActual, usuarioActual) })
-        socket.on(Canales.finalizarRegistroUsuario.traerNombre()) {
+        socket.emit(CanalesConexion.finalizarRegistroUsuario.traerNombre(), JSONObject().apply { put(labelUsuarioActual, usuarioActual) })
+        socket.on(CanalesConexion.finalizarRegistroUsuario.traerNombre()) {
             socket.disconnect()
             socketId = null
         }
@@ -43,22 +55,50 @@ class LogicaSocketVideollamada {
     fun registrarConexion() {
        Log.e(TAG,"registrar conexion")
         socket.connect()
-        socket.on(Canales.conexionEstablecida.traerNombre()) {
+        socket.on(CanalesConexion.conexionEstablecida.traerNombre()) {
             val json = JSONObject()
             json.put(labelUsuarioActual, usuarioActual)
-            socket.emit(Canales.registrarUsuario.traerNombre(), json)
-            escuchadorConexion?.invoke(Canales.registrarUsuario, it)
+            socket.emit(CanalesConexion.registrarUsuario.traerNombre(), json)
+            escuchadorConexion?.invoke(CanalesConexion.registrarUsuario, it)
         }
+    }
+
+    //Canales negociacion webrtc
+    fun unirmeASala(
+        nombreSala: String,
+        nombreReceptor: String,
+        escuchadorUnidoASala : ()-> Unit
+    ) {
+        this.escuchadorUnidoASala = escuchadorUnidoASala
+        val json = JSONObject()
+        json.put(labelUsuarioEmisor, usuarioActual)
+        json.put(labelUsuarioReceptor, nombreReceptor)
+        json.put(labelSala, nombreSala)
+        socket.emit(CanalesNegociacion.unirASala.traerNombre(), json)
+
+    }
+
+    fun salirDeSala(
+        nombreSala: String,
+        escuchadorUnidoSalirSala: ()->Unit
+    ) {
+        this.escuchadorUnidoSalirSala = escuchadorUnidoSalirSala
+        val json = JSONObject()
+        json.put(labelSala, nombreSala)
+        socket.emit(CanalesNegociacion.salirDeSala.traerNombre(), json)
     }
 
     /// Metodos privados
 
+    //CanalesConexion
     private fun adicionarCanales() {
         adicionarCanalRegistroUsuario()
+        adicionarCanalSalirSala()
+        adicionarCanalUnirseASala()
     }
 
     private fun adicionarCanalRegistroUsuario() {
-        socket.on(Canales.registrarUsuario.traerNombre()) {
+        socket.on(CanalesConexion.registrarUsuario.traerNombre()) {
             if (it.isEmpty()) { return@on }
             val objeto = it.first() as JSONObject
             socketId = objeto.getString("socketId")
@@ -66,12 +106,41 @@ class LogicaSocketVideollamada {
         }
     }
 
+    private fun adicionarCanalUnirseASala() {
+        socket.on(CanalesNegociacion.unirASala.traerNombre()) {
+            if (it.isEmpty()) { return@on }
+            if (it.first() !is JSONObject) { return@on }
+            escuchadorUnidoASala?.invoke()
+        }
+    }
+
+    private fun adicionarCanalSalirSala() {
+        socket.on(CanalesNegociacion.salirDeSala.traerNombre()) {
+            if (it.isEmpty()) { return@on }
+            if (it.first() !is JSONObject) { return@on }
+            escuchadorUnidoSalirSala?.invoke()
+        }
+    }
+
+
+
+
+
     ///Enumeradores
 
-    enum class Canales(private val nombre: String) {
+    enum class CanalesConexion(private val nombre: String) {
+        ///registro en servidor
         conexionEstablecida("conexionEstablecida"),
         finalizarRegistroUsuario("finalizarRegistroUsuario"),
         registrarUsuario("registrarUsuario"),
+        ;
+        fun traerNombre() = nombre
+    }
+
+    enum class CanalesNegociacion(private val nombre: String) {
+        ///negociacion webrtc
+        unirASala("unirASala"),
+        salirDeSala("salirDeSala"),
         ;
 
         fun traerNombre() = nombre

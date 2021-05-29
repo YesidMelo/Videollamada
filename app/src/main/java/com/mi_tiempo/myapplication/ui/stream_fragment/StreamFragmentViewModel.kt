@@ -6,6 +6,8 @@ import com.mi_tiempo.myapplication.base.App
 import com.mi_tiempo.myapplication.data_access.videollamada.LogicaWebRTC
 import com.mi_tiempo.myapplication.uses_cases.videollamada.FinalizarVideollamadaWebRTCCasoUso
 import com.mi_tiempo.myapplication.uses_cases.videollamada.IniciarVideollamadaWebRTCasoUso
+import com.mi_tiempo.myapplication.uses_cases.videollamada.SalirDeSalaCasoUso
+import com.mi_tiempo.myapplication.uses_cases.videollamada.UnirmeASalaVideollamadaCasoUso
 import org.webrtc.SurfaceViewRenderer
 import javax.inject.Inject
 
@@ -13,12 +15,15 @@ class StreamFragmentViewModel {
 
     @Inject lateinit var iniciarVideollamadaWebRTCasoUso: IniciarVideollamadaWebRTCasoUso
     @Inject lateinit var finalizarVideollamadaWebRTCCasoUso: FinalizarVideollamadaWebRTCCasoUso
+    @Inject lateinit var unirmeASalaVideollamadaCasoUso: UnirmeASalaVideollamadaCasoUso
+    @Inject lateinit var salirDeSalaCasoUso: SalirDeSalaCasoUso
 
     init {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
     }
 
     fun destruir() {
+
         finalizarVideollamadaWebRTCCasoUso.invoke()
     }
 
@@ -27,6 +32,18 @@ class StreamFragmentViewModel {
         renderLocal: SurfaceViewRenderer,
         renderRemoto: SurfaceViewRenderer
     ) {
-        iniciarVideollamadaWebRTCasoUso.invoke(activity, renderLocal, renderRemoto)
+
+        //iniciarVideollamadaWebRTCasoUso.invoke(activity, renderLocal, renderRemoto)
+    }
+
+    fun unirmeASala(
+        nombreSala: String,
+        receptor: String
+    ) {
+        unirmeASalaVideollamadaCasoUso.invoke(nombreSala, receptor)
+    }
+
+    fun salirDeSala(sala: String){
+        salirDeSalaCasoUso.invoke(sala)
     }
 }

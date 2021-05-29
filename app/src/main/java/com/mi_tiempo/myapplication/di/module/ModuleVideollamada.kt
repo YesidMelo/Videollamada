@@ -2,10 +2,7 @@ package com.mi_tiempo.myapplication.di.module
 
 import com.mi_tiempo.myapplication.data_access.videollamada.*
 import com.mi_tiempo.myapplication.di.scope.ApplicationScope
-import com.mi_tiempo.myapplication.uses_cases.videollamada.DesvincularDelSocketDeVideollamadaCasoUso
-import com.mi_tiempo.myapplication.uses_cases.videollamada.FinalizarVideollamadaWebRTCCasoUso
-import com.mi_tiempo.myapplication.uses_cases.videollamada.IniciarVideollamadaWebRTCasoUso
-import com.mi_tiempo.myapplication.uses_cases.videollamada.RegistrarUsuarioVideollamadaEnServidorCasoUso
+import com.mi_tiempo.myapplication.uses_cases.videollamada.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -25,7 +22,9 @@ class ModuleVideollamada {
     @Provides @ApplicationScope fun providesDesvincularDelSocketDeVideollamadaCasoUso() = DesvincularDelSocketDeVideollamadaCasoUso()
     @Provides @ApplicationScope fun providesFinalizarVideollamadaWebRTCCasoUso() = FinalizarVideollamadaWebRTCCasoUso()
     @Provides @ApplicationScope fun providesIniciarVideollamadaWebRTCasoUso() = IniciarVideollamadaWebRTCasoUso()
-    @Provides @ApplicationScope fun providesRegistrarUsuarioVideollamadaEnServidorCasoUso() = RegistrarUsuarioVideollamadaEnServidorCasoUso()
+    @Provides @ApplicationScope fun providesUnirmeASalaVideollamadaCasoUso() = UnirmeASalaVideollamadaCasoUso()
+    @Provides @ApplicationScope fun providesRegistrarUsuarioVideollamadaEnServidorCasoUso() = VincularUsuarioVideollamadaAServidorCasoUso()
+    @Provides @ApplicationScope fun providesSalirDeSalaCasoUso() = SalirDeSalaCasoUso()
 
 
 }

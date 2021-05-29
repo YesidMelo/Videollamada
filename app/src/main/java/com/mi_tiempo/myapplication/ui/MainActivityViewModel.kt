@@ -2,13 +2,13 @@ package com.mi_tiempo.myapplication.ui
 
 import com.mi_tiempo.myapplication.base.App
 import com.mi_tiempo.myapplication.uses_cases.videollamada.DesvincularDelSocketDeVideollamadaCasoUso
-import com.mi_tiempo.myapplication.uses_cases.videollamada.RegistrarUsuarioVideollamadaEnServidorCasoUso
+import com.mi_tiempo.myapplication.uses_cases.videollamada.VincularUsuarioVideollamadaAServidorCasoUso
 import javax.inject.Inject
 
 class MainActivityViewModel {
 
     @Inject lateinit var desvincularDelSocketDeVideollamadaCasoUso: DesvincularDelSocketDeVideollamadaCasoUso
-    @Inject lateinit var registrarUsuarioVideollamadaEnServidorCasoUso: RegistrarUsuarioVideollamadaEnServidorCasoUso
+    @Inject lateinit var vincularUsuarioVideollamadaAServidorCasoUso: VincularUsuarioVideollamadaAServidorCasoUso
 
     init {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
@@ -19,7 +19,7 @@ class MainActivityViewModel {
     }
 
     fun registrarUsuario(usuarioActual: String) {
-        registrarUsuarioVideollamadaEnServidorCasoUso.invoke(usuarioActual)
+        vincularUsuarioVideollamadaAServidorCasoUso.invoke(usuarioActual)
     }
 
 }

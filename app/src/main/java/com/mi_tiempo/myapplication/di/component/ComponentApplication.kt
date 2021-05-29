@@ -9,10 +9,7 @@ import com.mi_tiempo.myapplication.ui.MainActivity
 import com.mi_tiempo.myapplication.ui.MainActivityViewModel
 import com.mi_tiempo.myapplication.ui.stream_fragment.StreamFragment
 import com.mi_tiempo.myapplication.ui.stream_fragment.StreamFragmentViewModel
-import com.mi_tiempo.myapplication.uses_cases.videollamada.DesvincularDelSocketDeVideollamadaCasoUso
-import com.mi_tiempo.myapplication.uses_cases.videollamada.FinalizarVideollamadaWebRTCCasoUso
-import com.mi_tiempo.myapplication.uses_cases.videollamada.IniciarVideollamadaWebRTCasoUso
-import com.mi_tiempo.myapplication.uses_cases.videollamada.RegistrarUsuarioVideollamadaEnServidorCasoUso
+import com.mi_tiempo.myapplication.uses_cases.videollamada.*
 import dagger.Component
 import javax.inject.Singleton
 
@@ -33,7 +30,9 @@ interface ComponentApplication {
     fun inject(desvincularDelSocketDeVideollamadaCasoUso: DesvincularDelSocketDeVideollamadaCasoUso)
     fun inject(finalizarVideollamadaWebRTCCasoUso: FinalizarVideollamadaWebRTCCasoUso)
     fun inject(iniciarVideollamadaWebRTCasoUso: IniciarVideollamadaWebRTCasoUso)
-    fun inject(registrarUsuarioVideollamadaEnServidorCasoUso: RegistrarUsuarioVideollamadaEnServidorCasoUso)
+    fun inject(salirDeSalaCasoUso: SalirDeSalaCasoUso)
+    fun inject(unirmeASalaVideollamadaCasoUso: UnirmeASalaVideollamadaCasoUso)
+    fun inject(vincularUsuarioVideollamadaAServidorCasoUso: VincularUsuarioVideollamadaAServidorCasoUso)
 
     //viewmodels
     fun inject(streamFragmentViewModel: StreamFragmentViewModel)

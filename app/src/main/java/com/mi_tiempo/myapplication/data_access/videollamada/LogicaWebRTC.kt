@@ -50,6 +50,8 @@ class LogicaWebRTC {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
     }
 
+    /// Metodos publicos
+
     fun conEscuchadorEnviarASocket(escuchadorEnviarASocket : ((JSONObject?)->Unit)?) : LogicaWebRTC{
         this.escuchadorEnviarASocket = escuchadorEnviarASocket
         return this
@@ -69,6 +71,11 @@ class LogicaWebRTC {
     ) {
         configurarVideollamada(activity, videoLocal, videoRemoto)
     }
+
+    fun traerMensajeAEnviar() = mensaje
+
+
+    ///Metodos privados
 
     private fun configurarVideollamada(
         activity: AppCompatActivity,

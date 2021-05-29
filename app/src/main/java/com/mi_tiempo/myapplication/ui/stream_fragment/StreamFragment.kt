@@ -18,6 +18,7 @@ class StreamFragment: Fragment() {
     lateinit var binding: FragmentStreamBinding
     var usuarioActual: String? = null
     var usuarioALlamar: String? = null
+    var sala: String? = null
 
 
     override fun onCreateView(
@@ -28,12 +29,27 @@ class StreamFragment: Fragment() {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
         binding = FragmentStreamBinding.inflate(inflater)
 
-        streamFragmentViewModel.inicializarVideoLocal((context as AppCompatActivity), binding.videoLocal, binding.videoRemoto)
+        streamFragmentViewModel.inicializarVideoLocal(
+            activity = (context as AppCompatActivity),
+            renderLocal = binding.videoLocal,
+            renderRemoto = binding.videoRemoto
+        )
+        ponerEscuchadores()
         return binding.root
     }
 
     override fun onDestroy() {
         streamFragmentViewModel.destruir()
         super.onDestroy()
+    }
+
+    ///Metodos privados
+    private fun ponerEscuchadores() {
+        binding.botonEntrarSala.setOnClickListener {
+            streamFragmentViewModel.unirmeASala(sala!!, usuarioALlamar!!)
+        }
+        binding.botonSalirSala.setOnClickListener {
+            streamFragmentViewModel.salirDeSala(sala!!)
+        }
     }
 }
