@@ -33,7 +33,7 @@ class StreamFragmentViewModel {
         renderRemoto: SurfaceViewRenderer
     ) {
 
-        //iniciarVideollamadaWebRTCasoUso.invoke(activity, renderLocal, renderRemoto)
+        iniciarVideollamadaWebRTCasoUso.invoke(activity, renderLocal, renderRemoto)
     }
 
     fun unirmeASala(

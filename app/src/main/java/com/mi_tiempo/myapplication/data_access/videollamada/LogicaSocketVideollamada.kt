@@ -13,13 +13,9 @@ class LogicaSocketVideollamada {
     private val URL_VIDEOLLAMADA = "http://192.168.1.3:3000/stream"
 
     private var escuchadorConexion : ((CanalesConexion, Any?)->Unit)? = null
-    private var escuchadorNegociacion: ((CanalesNegociacion, Any?)->Unit)? = null
     private var escuchadorUnidoASala : (()-> Unit)? = null
     private var escuchadorUnidoSalirSala : (()-> Unit)? = null
-    private val labelUsuarioActual = "usuario"
-    private val labelUsuarioEmisor = "emisor"
-    private val labelUsuarioReceptor = "receptor"
-    private val labelSala = "Sala"
+    private var recibirOferta : ((JSONObject)->Unit)? = null
     private var socket: Socket = IO.socket(URL_VIDEOLLAMADA)
     private var socketId: String? = null
     private var usuarioActual : String? = null
@@ -34,10 +30,6 @@ class LogicaSocketVideollamada {
         this.escuchadorConexion = escuchadorConexion
     }
 
-    fun conEscuchadorNegociacion(escuchadorNegociacion : ((CanalesNegociacion, Any?)->Unit)?) {
-        this.escuchadorNegociacion = escuchadorNegociacion
-    }
-
     fun conUsuarioActual(usuarioActual : String?) {
         this.usuarioActual = usuarioActual
     }
@@ -45,7 +37,7 @@ class LogicaSocketVideollamada {
     //Canales conexion
 
     fun finalizarConexion() {
-        socket.emit(CanalesConexion.finalizarRegistroUsuario.traerNombre(), JSONObject().apply { put(labelUsuarioActual, usuarioActual) })
+        socket.emit(CanalesConexion.finalizarRegistroUsuario.traerNombre(), JSONObject().apply { put(ConstantesVideollamada.labelUsuarioActual, usuarioActual) })
         socket.on(CanalesConexion.finalizarRegistroUsuario.traerNombre()) {
             socket.disconnect()
             socketId = null
@@ -57,7 +49,7 @@ class LogicaSocketVideollamada {
         socket.connect()
         socket.on(CanalesConexion.conexionEstablecida.traerNombre()) {
             val json = JSONObject()
-            json.put(labelUsuarioActual, usuarioActual)
+            json.put(ConstantesVideollamada.labelUsuarioActual, usuarioActual)
             socket.emit(CanalesConexion.registrarUsuario.traerNombre(), json)
             escuchadorConexion?.invoke(CanalesConexion.registrarUsuario, it)
         }
@@ -71,9 +63,9 @@ class LogicaSocketVideollamada {
     ) {
         this.escuchadorUnidoASala = escuchadorUnidoASala
         val json = JSONObject()
-        json.put(labelUsuarioEmisor, usuarioActual)
-        json.put(labelUsuarioReceptor, nombreReceptor)
-        json.put(labelSala, nombreSala)
+        json.put(ConstantesVideollamada.labelUsuarioEmisor, usuarioActual)
+        json.put(ConstantesVideollamada.labelUsuarioReceptor, nombreReceptor)
+        json.put(ConstantesVideollamada.labelSala, nombreSala)
         socket.emit(CanalesNegociacion.unirASala.traerNombre(), json)
 
     }
@@ -84,8 +76,22 @@ class LogicaSocketVideollamada {
     ) {
         this.escuchadorUnidoSalirSala = escuchadorUnidoSalirSala
         val json = JSONObject()
-        json.put(labelSala, nombreSala)
+        json.put(ConstantesVideollamada.labelSala, nombreSala)
+        json.put(ConstantesVideollamada.labelUsuarioEmisor, usuarioActual)
         socket.emit(CanalesNegociacion.salirDeSala.traerNombre(), json)
+    }
+
+    fun enviarOferta(
+            nombreSala: String,
+            nombreReceptor: String,
+            jsonObject: JSONObject,
+            recibirOferta: (JSONObject) ->Unit
+    ) {
+        this.recibirOferta = recibirOferta
+        jsonObject.put(ConstantesVideollamada.labelUsuarioEmisor, usuarioActual)
+        jsonObject.put(ConstantesVideollamada.labelSala, nombreSala)
+        jsonObject.put(ConstantesVideollamada.labelUsuarioReceptor, nombreReceptor)
+        socket.emit(CanalesNegociacion.enviarOfertaReceptor.traerNombre(),jsonObject)
     }
 
     /// Metodos privados
@@ -95,6 +101,7 @@ class LogicaSocketVideollamada {
         adicionarCanalRegistroUsuario()
         adicionarCanalSalirSala()
         adicionarCanalUnirseASala()
+        adicionarCanalRecibirOferta()
     }
 
     private fun adicionarCanalRegistroUsuario() {
@@ -106,6 +113,7 @@ class LogicaSocketVideollamada {
         }
     }
 
+    //Canales sala
     private fun adicionarCanalUnirseASala() {
         socket.on(CanalesNegociacion.unirASala.traerNombre()) {
             if (it.isEmpty()) { return@on }
@@ -122,6 +130,15 @@ class LogicaSocketVideollamada {
         }
     }
 
+    // Canales oferta
+    private fun adicionarCanalRecibirOferta() {
+        socket.on(CanalesNegociacion.enviarOfertaReceptor.traerNombre()){
+            if (it.isEmpty()) { return@on }
+            if (it.first() !is JSONObject) { return@on }
+            recibirOferta?.invoke(it.first() as JSONObject)
+            Log.e(TAG, "Ha llegado a recibir oferta")
+        }
+    }
 
 
 
@@ -141,6 +158,7 @@ class LogicaSocketVideollamada {
         ///negociacion webrtc
         unirASala("unirASala"),
         salirDeSala("salirDeSala"),
+        enviarOfertaReceptor("enviarOfertaReceptor"),
         ;
 
         fun traerNombre() = nombre

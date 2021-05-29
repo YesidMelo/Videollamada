@@ -3,12 +3,6 @@ package com.mi_tiempo.myapplication.data_access.videollamada
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.mi_tiempo.myapplication.base.App
-import io.socket.global.Global
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.webrtc.SurfaceViewRenderer
 import javax.inject.Inject
@@ -18,7 +12,7 @@ class InteraccionEntreWebRTCYSocketVideollamada {
     private val TAG = "InteraccionEntreWebRTCYSocketVideollamada"
     @Inject lateinit var logicaWebRTC : LogicaWebRTC
     @Inject lateinit var logicaSocketVideollamada : LogicaSocketVideollamada
-    private var objetoWebRTC : JSONObject? = null
+    private var nombreSala: String? = null
 
     init {
         (App.getContext() as App).traerComponenteAplicacion()?.inject(this)
@@ -61,12 +55,21 @@ class InteraccionEntreWebRTCYSocketVideollamada {
         nombreSala: String,
         nombreReceptor: String
     ) {
-        logicaSocketVideollamada.unirmeASala(nombreSala, nombreReceptor){}
+        this.nombreSala = nombreSala
+        logicaSocketVideollamada.unirmeASala(nombreSala, nombreReceptor){
+            val json : JSONObject = logicaWebRTC.traerMensajeLocalAEnviar()
+            logicaSocketVideollamada.enviarOferta(
+                    nombreSala= nombreSala,
+                    nombreReceptor= nombreReceptor,
+                    jsonObject = json,
+                    recibirOferta = logicaWebRTC::recibirOferta
+            )
+        }
     }
 
     fun salirDeSala(nombreSala: String) {
         logicaSocketVideollamada.salirDeSala(nombreSala){
-
+            Log.e(TAG, "Ha salido de la sala $nombreSala");
         }
     }
 }
