@@ -1,0 +1,25 @@
+
+S
+#app/src/main/res/values/strings.xml,d\2\d2281fbb3027de2722081a53408dd77628bf080e
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+@
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
+p
+@app/src/main/java/com/mi_tiempo/myapplication/ui/MainActivity.kt,0\f\0fc93540a47745aaf1a42ac4d19f351cf2787381
+x
+Happ/src/main/java/com/mi_tiempo/myapplication/ui/VideollamadaActivity.kt,1\d\1d220a31890212e8ed101e50f1fbabff53e4fe9a
+s
+Capp/src/main/java/com/mi_tiempo/myapplication/ui/ManejadorSocket.kt,b\4\b4cd37e400aa17adec1127c742cb2cb052672660
+}
+Mapp/src/main/java/com/mi_tiempo/myapplication/ui/IntermediarioSocketWebRTC.kt,9\8\9826b545064550c41ef4791ce400e16a3bf4d3d2
+s
+Capp/src/main/java/com/mi_tiempo/myapplication/ui/ManejadorWebRTC.kt,7\9\795a12d8f64a1d8b72b3532d5d60435e14e79651
+Y
+)app/src/main/res/layout/activity_main.xml,7\6\76b07e40f24cce093536731477540f12e7da3cb6
+|
+Lapp/src/main/java/com/mi_tiempo/myapplication/di/module/ModuleApplication.kt,4\b\4b5e1dafb24dd799a53f8b52ab5e283ab3176fdf
+?
+settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
+a
+1documentacion/configuracionServidorFuncionando.js,c\b\cbca0ca4aa12f5edad591c05982331a23d0aa233
